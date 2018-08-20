@@ -1,0 +1,30 @@
+<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+<script src="./abi.js"></script>
+<script>
+    if (typeof web3 !== 'undefined') {
+        web3 = new Web3(web3.currentProvider);
+    } else {
+        // set the provider you want from Web3.providers
+        web3 = new Web3(new Web3.providers.HttpProvider("http://192.168.10.10:8545"));
+    } 
+    console.log(web3);
+    var MyContract = web3.eth.contract(abi);
+    // instantiate by address
+    var contractInstance = MyContract.at(address);
+
+    // watch for an event with {some: 'args'}
+    var myEvent = contractInstance.addedOrder({some: 'args'}, {fromBlock: 0, toBlock: 'latest'});
+    myEvent.watch(function(error, result){
+        if(!error){
+            console.log(result)
+        }
+    });
+
+    // // would get all past logs again.
+    // var myResults = myEvent.get(function(error, logs){ 
+
+    // });
+
+    // would stop and uninstall the filter
+    // myEvent.stopWatching();
+</script>
